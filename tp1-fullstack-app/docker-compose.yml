@@ -1,0 +1,49 @@
+services:
+  # Create image and run database
+  database:
+    build: ./database # Dockerfile directory
+    container_name: my-db-container # Not mandatory
+    restart: unless-stopped
+    networks:
+      - private-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+
+
+  # Create image and run backend server
+  backend:
+    build: ./backend/simpleapi
+    container_name: my-backend-container
+    restart: unless-stopped
+    networks:
+      - front-network
+      - private-network
+    depends_on:
+      - database
+
+
+  # Create image and run proxy
+  httpd:
+    build: ./httpd
+    container_name: my-httpd-container
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - front-network
+    depends_on:
+      - backend
+
+# Create the Network
+networks:
+  front-network:
+    driver: bridge
+  private-network:
+    driver: bridge
+
+
+volumes:
+  db-data: {}

@@ -33,4 +33,6 @@ build/
 ### VS Code ###
 .vscode/
 
-/database/db-data/
+/tp1-fullstack-app/database/db-data/
+tp1-fullstack-app/backend/simpleapi/.mvn/wrapper/maven-wrapper.properties
+tp1-fullstack-app/backend/simpleapi/.gitattributes
