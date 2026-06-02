@@ -21,13 +21,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-     #finally build your app with the latest command
-      - name: Build and test with Maven
-        run: mvn clean verify --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
-        
       - name: SonarCloud Scan
         run: mvn -B verify sonar:sonar \
-          -Dsonar.projectKey=lrondal_DevOps \
+          -Dsonar.projectKey=lrondal_devops \
           -Dsonar.organization=lrondal \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
