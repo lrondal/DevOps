@@ -24,6 +24,14 @@ jobs:
      #finally build your app with the latest command
       - name: Build and test with Maven
         run: mvn clean verify --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
+        
+      - name: SonarCloud Scan
+        run: mvn -B verify sonar:sonar \
+          -Dsonar.projectKey=lrondal_DevOps \
+          -Dsonar.organization=lrondal \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
 
   # define job to build and publish docker image
   build-and-push-docker-image:
