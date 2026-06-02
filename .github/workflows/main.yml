@@ -7,6 +7,7 @@ on:
       - develop 
   pull_request:
 
+
 jobs:
   test-backend: 
     runs-on: ubuntu-24.04
@@ -43,6 +44,7 @@ jobs:
       - name: SonarCloud Scan
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=lrondal_DevOps -Dsonar.organization=lrondal -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
 
+
   # define job to build and publish docker image
   build-and-push-docker-image-database:
     needs: sonar-analysis
@@ -54,6 +56,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database
+          tags: |
+            # Tag latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # Tag short SHA
+            type=sha,format=short
+
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
@@ -61,7 +75,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./tp1-fullstack-app/database
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
+          tags: ${{ steps.meta.outputs.tags }}
           push: ${{ github.ref == 'refs/heads/main' }}
 
 
@@ -75,6 +89,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api
+          tags: |
+            # Tag latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # Tag short SHA
+            type=sha,format=short
+            
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
@@ -84,7 +110,7 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./tp1-fullstack-app/backend/simpleapi
           # Note: tags has to be all lower-case
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+          tags: ${{ steps.meta.outputs.tags }}
           push: ${{ github.ref == 'refs/heads/main' }}
 
 
@@ -98,6 +124,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd
+          tags: |
+            # Tag latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # Tag short SHA
+            type=sha,format=short
+
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
@@ -105,5 +143,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./tp1-fullstack-app/httpd
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest
+          tags: ${{ steps.meta.outputs.tags }}
           push: ${{ github.ref == 'refs/heads/main' }}
+
+
+
