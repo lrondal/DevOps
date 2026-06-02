@@ -22,12 +22,7 @@ jobs:
           java-version: '21'
 
       - name: SonarCloud Scan
-        run: mvn -B verify sonar:sonar \
-          -Dsonar.projectKey=lrondal_devops \
-          -Dsonar.organization=lrondal \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-          --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=lrondal_Dev0ps -Dsonar.organization=lrondal -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./tp1-fullstack-app/backend/simpleapi/pom.xml
 
   # define job to build and publish docker image
   build-and-push-docker-image:
