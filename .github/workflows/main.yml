@@ -50,6 +50,7 @@ jobs:
     needs: sonar-analysis
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
+    if: github.ref == 'refs/heads/main'
 
     # steps to perform in job
     steps:
@@ -83,6 +84,7 @@ jobs:
     needs: sonar-analysis
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
+    if: github.ref == 'refs/heads/main'
 
     # steps to perform in job
     steps:
@@ -118,7 +120,8 @@ jobs:
     needs: sonar-analysis
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-24.04
-
+    if: github.ref == 'refs/heads/main'
+    
     # steps to perform in job
     steps:
       - name: Checkout code
