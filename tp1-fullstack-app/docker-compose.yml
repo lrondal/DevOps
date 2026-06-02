@@ -2,27 +2,29 @@ services:
   # Create image and run database
   database:
     build: ./database # Dockerfile directory
-    container_name: my-db-container # Not mandatory
+    container_name: my-db-container
     restart: unless-stopped
     networks:
       - private-network
     volumes:
       - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USER}
+    env_file:
+      - .env
+
 
 
   # Create image and run backend server
   backend:
     build: ./backend/simpleapi
     container_name: my-backend-container
-    restart: on-failure:3
+    restart: unless-stopped #on-failure:3
     networks:
       - front-network
       - private-network
     depends_on:
       - database
+    env_file:
+      - .env
 
 
   # Create image and run proxy
