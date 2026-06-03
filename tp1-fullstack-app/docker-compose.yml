@@ -26,6 +26,12 @@ services:
     env_file:
       - .env
 
+  front:
+    build: ./front
+    container_name: my-frontend-container
+    restart: unless-stopped
+    networks:
+      - front-network
 
   # Create image and run proxy
   httpd:
@@ -38,6 +44,11 @@ services:
       - front-network
     depends_on:
       - backend
+      - front
+
+
+
+
 
 # Create the Network
 networks:
