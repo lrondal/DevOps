@@ -2,7 +2,7 @@ name: Deploy Infrastructure
 
 on:
   workflow_run:
-    workflows: ["Nom exact de ton workflow Docker"]
+    workflows: ["CI devops 2026"]
     types:
       - completed
     branches:
