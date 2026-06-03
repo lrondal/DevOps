@@ -1,0 +1,13 @@
+---
+- name: Launch PostgreSQL container
+  docker_container:
+    name: my-db-container
+    image: lrondal/tp-devops-database:latest
+    networks:
+      - name: private-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart_policy: unless-stopped
+    env:
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_PASSWORD: "{{ db_password }}"

@@ -1,0 +1,10 @@
+---
+- name: Launch httpd container
+  docker_container:
+    name: my-httpd-container
+    image: lrondal/tp-devops-httpd:latest
+    networks:
+      - name: front-network
+    ports:
+      - "80:80"
+    restart_policy: unless-stopped

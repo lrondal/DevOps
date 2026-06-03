@@ -17,7 +17,7 @@ services:
   backend:
     build: ./backend/simpleapi
     container_name: my-backend-container
-    restart: unless-stopped #on-failure:3
+    restart: on-failure:3
     networks:
       - front-network
       - private-network
