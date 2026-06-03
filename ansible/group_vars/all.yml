@@ -1,0 +1,4 @@
+db_user: "usr"
+# Fake value because it will be rewrite by Github Secret
+db_password: "github_secret" 
+

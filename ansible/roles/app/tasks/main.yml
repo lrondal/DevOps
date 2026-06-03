@@ -1,0 +1,19 @@
+---
+- name: Launch application container
+  docker_container:
+    name: my-backend-container
+    image: lrondal/tp-devops-simple-api:latest
+    networks:
+      - name: private-network
+      - name: front-network
+    volumes:
+      - /opt/application.yml:/config/application.yml:ro
+    ports:
+      - "8080:8080"
+    restart_policy: on-failure
+    restart_retries: 3
+    env:
+      DB_USER: "{{ db_user }}"
+      DB_PASSWORD: "{{ db_password }}"
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_PASSWORD: "{{ db_password }}"
