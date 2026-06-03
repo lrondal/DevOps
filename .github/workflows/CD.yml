@@ -73,6 +73,36 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: ${{ github.ref == 'refs/heads/main' }}
 
+  build-and-push-docker-image-front:
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-24.04
+    
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-front
+          tags: |
+            # Tag latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # Tag short SHA
+            type=sha,format=short
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build image and push front
+        uses: docker/build-push-action@v6
+        with:
+          context: ./tp1-fullstack-app/front
+          tags: ${{ steps.meta.outputs.tags }}
+          push: ${{ github.ref == 'refs/heads/main' }}
 
   build-and-push-docker-image-httpd:
     # run only when code is compiling and tests are passing

@@ -1,0 +1,10 @@
+---
+- name: Launch Front container
+  community.docker.docker_container:
+    name: front
+    image: lrondal/tp-devops-front:latest
+    networks:
+      - name: front-network
+    state: started
+    restart_policy: unless-stopped
+    pull: true
