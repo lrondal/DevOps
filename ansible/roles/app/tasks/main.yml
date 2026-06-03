@@ -8,10 +8,9 @@
       - name: front-network
     volumes:
       - /opt/application.yml:/config/application.yml:ro
-    ports:
-      - "8080:8080"
     restart_policy: on-failure
     restart_retries: 3
+    pull: true
     env:
       DB_USER: "{{ db_user }}"
       DB_PASSWORD: "{{ db_password }}"
