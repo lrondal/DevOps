@@ -9,9 +9,10 @@ on:
       - main  
   
 jobs:
+  build-and-push-docker-image-database:
     runs-on: ubuntu-24.04
 
-    # steps to perform in job
+      # steps to perform in job
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
