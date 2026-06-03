@@ -1,8 +1,12 @@
 name: Deploy Infrastructure
 
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["Nom exact de ton workflow Docker"]
+    types:
+      - completed
+    branches:
+      - main  
 
 jobs:
   deploy:
