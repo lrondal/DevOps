@@ -1,7 +1,25 @@
 ---
-- name: Launch application container
+- name: Launch backend blue
   docker_container:
-    name: my-backend-container
+    name: backend-blue
+    image: lrondal/tp-devops-simple-api:latest
+    networks:
+      - name: private-network
+      - name: front-network
+    volumes:
+      - /opt/application.yml:/config/application.yml:ro
+    restart_policy: on-failure
+    restart_retries: 3
+    pull: true
+    env:
+      DB_USER: "{{ db_user }}"
+      DB_PASSWORD: "{{ db_password }}"
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_PASSWORD: "{{ db_password }}"
+
+- name: Launch backend green
+  docker_container:
+    name: backend-green
     image: lrondal/tp-devops-simple-api:latest
     networks:
       - name: private-network
